@@ -3,14 +3,13 @@ package com.accenture;
 import com.ibm.broker.javacompute.MbJavaComputeNode;
 import com.ibm.broker.plugin.MbElement;
 import com.ibm.broker.plugin.MbException;
+import com.ibm.broker.plugin.MbJSON;
 import com.ibm.broker.plugin.MbMessage;
 import com.ibm.broker.plugin.MbMessageAssembly;
 import com.ibm.broker.plugin.MbOutputTerminal;
 import com.ibm.broker.plugin.MbUserException;
 
-public class ADLFlow_JavaCompute extends MbJavaComputeNode {
-
-	private static final String JSON_PATH = "/JSON/Data/";
+public class ADLFlow_JavaComputeErrorHandling extends MbJavaComputeNode {
 
 	public void evaluate(MbMessageAssembly inAssembly) throws MbException {
 		MbOutputTerminal out = getOutputTerminal("out");
@@ -20,28 +19,15 @@ public class ADLFlow_JavaCompute extends MbJavaComputeNode {
 		MbMessageAssembly outAssembly = null;
 		try {
 			// create new message as a copy of the input
-			MbMessage outMessage = new MbMessage(inMessage);
+			MbMessage outMessage = new MbMessage();
 			outAssembly = new MbMessageAssembly(inAssembly, outMessage);
 			// ----------------------------------------------------------
 			// Add user code below
-
-			// get PQR data
-			MbElement inputRoot = inMessage.getRootElement();
-			
-			MbElement idPQR = inputRoot.getFirstElementByPath(JSON_PATH + "idPQR");
-			MbElement tipoIdentificacion = inputRoot.getFirstElementByPath(JSON_PATH + "tipoIdentificacion");
-			MbElement idCliente = inputRoot.getFirstElementByPath(JSON_PATH + "idCliente");
-			MbElement contenidoPQR = inputRoot.getFirstElementByPath(JSON_PATH + "contenidoPQR");
-			MbElement extra1 = inputRoot.getFirstElementByPath(JSON_PATH + "extra1");
-			MbElement extra2 = inputRoot.getFirstElementByPath(JSON_PATH + "extra2");
-			MbElement extra3 = inputRoot.getFirstElementByPath(JSON_PATH + "extra3");
-
-			
-			
-			
-			
-			
-			
+			MbElement outJsonRoot = outMessage.getRootElement().createElementAsLastChild(MbJSON.PARSER_NAME);
+			MbElement outJsonData = outJsonRoot.createElementAsLastChild(MbElement.TYPE_NAME, MbJSON.DATA_ELEMENT_NAME,
+					null);
+			outJsonData.createElementAsLastChild(MbElement.TYPE_NAME_VALUE, "Error",
+					"Error en petición a servicio de ADL");
 			// End of user code
 			// ----------------------------------------------------------
 		} catch (MbException e) {

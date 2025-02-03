@@ -1,7 +1,9 @@
 package com.accenture;
 
 import com.ibm.broker.javacompute.MbJavaComputeNode;
+import com.ibm.broker.plugin.MbElement;
 import com.ibm.broker.plugin.MbException;
+import com.ibm.broker.plugin.MbJSON;
 import com.ibm.broker.plugin.MbMessage;
 import com.ibm.broker.plugin.MbMessageAssembly;
 import com.ibm.broker.plugin.MbOutputTerminal;
@@ -10,6 +12,7 @@ import com.ibm.broker.plugin.MbUserException;
 public class ADLFlow_JavaComputeProcessADLResponse extends MbJavaComputeNode {
 
 	public void evaluate(MbMessageAssembly inAssembly) throws MbException {
+		
 		MbOutputTerminal out = getOutputTerminal("out");
 		MbOutputTerminal alt = getOutputTerminal("alternate");
 
@@ -17,11 +20,26 @@ public class ADLFlow_JavaComputeProcessADLResponse extends MbJavaComputeNode {
 		MbMessageAssembly outAssembly = null;
 		try {
 			// create new message as a copy of the input
-			MbMessage outMessage = new MbMessage(inMessage);
-			outAssembly = new MbMessageAssembly(inAssembly, outMessage);
+			 MbMessage outMessage = new MbMessage(inMessage);
+			 outAssembly = new MbMessageAssembly(inAssembly, outMessage);
 			// ----------------------------------------------------------
 			// Add user code below
+		/*	MbMessage outMessage = new MbMessage();
 
+			MbElement jsonData = outMessage.getRootElement().createElementAsLastChild(MbJSON.PARSER_NAME)
+					.createElementAsLastChild(MbJSON.ARRAY, MbJSON.DATA_ELEMENT_NAME, null);
+			MbElement jsonFirstArrayItem = jsonData.createElementAsLastChild(MbElement.TYPE_NAME,
+					MbJSON.ARRAY_ITEM_NAME, null);
+			jsonFirstArrayItem.createElementAsFirstChild(MbElement.TYPE_NAME_VALUE, "Nam1", "val1");
+			jsonFirstArrayItem.createElementAsLastChild(MbElement.TYPE_NAME_VALUE, "Num1", new Integer(1));
+
+			MbElement jsonSecondArrayItem = jsonData.createElementAsLastChild(MbElement.TYPE_NAME,
+					MbJSON.ARRAY_ITEM_NAME, null);
+			jsonSecondArrayItem.createElementAsFirstChild(MbElement.TYPE_NAME_VALUE, "Nam2", "val2");
+			jsonSecondArrayItem.createElementAsLastChild(MbElement.TYPE_NAME_VALUE, "Num2", new Integer(2));
+
+			outAssembly = new MbMessageAssembly(inAssembly, outMessage);
+*/
 			// End of user code
 			// ----------------------------------------------------------
 		} catch (MbException e) {
@@ -32,7 +50,8 @@ public class ADLFlow_JavaComputeProcessADLResponse extends MbJavaComputeNode {
 			throw e;
 		} catch (Exception e) {
 			// Consider replacing Exception with type(s) thrown by user code
-			// Example handling ensures all exceptions are re-thrown to be handled in the flow
+			// Example handling ensures all exceptions are re-thrown to be handled in the
+			// flow
 			throw new MbUserException(this, "evaluate()", "", "", e.toString(), null);
 		}
 		// The following should only be changed
@@ -42,9 +61,9 @@ public class ADLFlow_JavaComputeProcessADLResponse extends MbJavaComputeNode {
 	}
 
 	/**
-	 * onPreSetupValidation() is called during the construction of the node
-	 * to allow the node configuration to be validated.  Updating the node
-	 * configuration or connecting to external resources should be avoided.
+	 * onPreSetupValidation() is called during the construction of the node to allow
+	 * the node configuration to be validated. Updating the node configuration or
+	 * connecting to external resources should be avoided.
 	 *
 	 * @throws MbException
 	 */
@@ -56,10 +75,9 @@ public class ADLFlow_JavaComputeProcessADLResponse extends MbJavaComputeNode {
 	 * onSetup() is called during the start of the message flow allowing
 	 * configuration to be read/cached, and endpoints to be registered.
 	 *
-	 * Calling getPolicy() within this method to retrieve a policy links this
-	 * node to the policy. If the policy is subsequently redeployed the message
-	 * flow will be torn down and reinitialized to it's state prior to the policy
-	 * redeploy.
+	 * Calling getPolicy() within this method to retrieve a policy links this node
+	 * to the policy. If the policy is subsequently redeployed the message flow will
+	 * be torn down and reinitialized to it's state prior to the policy redeploy.
 	 *
 	 * @throws MbException
 	 */
@@ -68,8 +86,8 @@ public class ADLFlow_JavaComputeProcessADLResponse extends MbJavaComputeNode {
 	}
 
 	/**
-	 * onStart() is called as the message flow is started. The thread pool for
-	 * the message flow is running when this method is invoked.
+	 * onStart() is called as the message flow is started. The thread pool for the
+	 * message flow is running when this method is invoked.
 	 *
 	 * @throws MbException
 	 */
@@ -78,7 +96,7 @@ public class ADLFlow_JavaComputeProcessADLResponse extends MbJavaComputeNode {
 	}
 
 	/**
-	 * onStop() is called as the message flow is stopped. 
+	 * onStop() is called as the message flow is stopped.
 	 *
 	 * The onStop method is called twice as a message flow is stopped. Initially
 	 * with a 'wait' value of false and subsequently with a 'wait' value of true.
